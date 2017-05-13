@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Address, Hero, states, heroes } from "./data-model";
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Address, Hero, states } from "./data-model";
 
 @Component({
   selector: 'hero-detail',
@@ -22,6 +22,7 @@ export class HeroDetailComponent {
             name: ['', Validators.required],
             surname: '',
 
+            secretLairs: this.fb.array([]),
             address: this.fb.group(new Address()),
         
             power: '',
