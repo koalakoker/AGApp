@@ -8,3 +8,7 @@
 /app/data-model.js.map
 /app/hero-detail.component.js
 /app/hero-detail.component.js.map
+/app/hero-list.component.js
+/app/hero-list.component.js.map
+/app/hero.service.js
+/app/hero.service.js.map
