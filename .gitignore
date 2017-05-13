@@ -2,6 +2,7 @@
 /app/app.component.js.map
 /app/app.module.js
 /app/app.module.js.map
+/main.js
 /main.js.map
 /app/mock-heroes.js.map
 /app/app.component.spec.js
@@ -20,4 +21,3 @@
 /app/heroes.component.js.map
 /app/mock-heroes.js
 /npm-debug.log
-/main.js
