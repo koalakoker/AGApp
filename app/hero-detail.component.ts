@@ -15,6 +15,7 @@ export class HeroDetailComponent {
 
     constructor(private fb: FormBuilder) {
         this.createForm();
+        this.trackNameChange();
     }
 
     createForm() {
@@ -56,8 +57,21 @@ export class HeroDetailComponent {
         this.secretLairs.push(this.fb.group(new Address()));
     }
 
-    removeLair(index) {
+    removeLair(index: number) {
         this.secretLairs.removeAt(index);
+    }
+
+    onNameUpdate(newName: string) {
+        // this.heroForm.setValue({
+        //     name: newName
+        // })
+    }
+
+    trackNameChange() {
+        const nameControl = this.heroForm.get('name');
+        nameControl.valueChanges.forEach(
+            (value: string) => this.onNameUpdate(value)
+        );
     }
 
 }
