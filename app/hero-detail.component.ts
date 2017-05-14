@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Address, Hero, states } from "./data-model";
 
 @Component({
@@ -46,6 +46,18 @@ export class HeroDetailComponent {
 
     get secretLairs(): FormArray {
         return this.heroForm.get('secretLairs') as FormArray;
+    }
+
+    get surname(): FormControl {
+        return this.heroForm.get('surname') as FormControl;
+    }
+
+    addLair() {
+        this.secretLairs.push(this.fb.group(new Address()));
+    }
+
+    removeLair(index) {
+        this.secretLairs.removeAt(index);
     }
 
 }
