@@ -23,8 +23,7 @@ export class HeroDetailComponent {
             surname: '',
 
             secretLairs: this.fb.array([]),
-            address: this.fb.group(new Address()),
-        
+
             power: '',
             sidekick: ''
         });
@@ -33,7 +32,20 @@ export class HeroDetailComponent {
     ngOnChanges() {
         this.heroForm.reset({
             name:    this.hero.name,
-            address: this.hero.addresses[0] || new Address()
+            //address: this.hero.addresses[0] || new Address()
         });
+
+        this.setAddresses(this.hero.addresses);
     }
+
+    setAddresses(addresses: Address[]) {
+        const addressFGs = addresses.map(address => this.fb.group(address));
+        const addressFormArray = this.fb.array(addressFGs);
+        this.heroForm.setControl('secretLairs', addressFormArray);
+    }
+
+    get secretLairs(): FormArray {
+        return this.heroForm.get('secretLairs') as FormArray;
+    }
+
 }
