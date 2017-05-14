@@ -10,6 +10,7 @@ import { HeroService } from './hero.service';
   selector: 'hero-list',
   templateUrl: './hero-list.component.html'
 })
+
 export class HeroListComponent implements OnInit {
   heroes: Observable<Hero[]>;
   isLoading = false;
