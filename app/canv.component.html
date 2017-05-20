@@ -1,1 +1,11 @@
-<h2>Here I am</h2>
+<canvas ng-mousedown="click()" id="myCanvas" 
+        width="{{width}}" 
+        height="{{height}}" 
+        style="border:1px solid #000000;"
+        ></canvas>
+<br>
+<button type="button" (click)="click();">
+  button
+</button>
+
+<p>{{dbg}}</p>
