@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { LineChartDemoComponent } from './line-chart-demo'
+import { CanvComponent } from "./canv.component";
 
 @Component({
   selector: 'my-app',
   template: `
-  <h1>Google chart with: {{name}}</h1>
-  <div id="chart_div"></div>
+  <h1>Canvas: {{name}}</h1>
+  <canvComp>Loading AppComponent content here ...</canvComp>
   `
   ,
 })
