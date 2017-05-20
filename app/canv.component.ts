@@ -24,11 +24,18 @@ export class CanvComponent implements AfterViewChecked
 
         canvas = <HTMLCanvasElement>document.getElementById('myCanvas');
         ctx = canvas.getContext("2d");
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'red';
         ctx.moveTo(0,0);
         ctx.lineTo(200,100);
+        ctx.lineTo(400,0);
+        ctx.moveTo(0,300);
+        ctx.lineTo(200,200);
+        ctx.lineTo(400,300);
+        ctx.moveTo(200,200);
+        ctx.lineTo(200,100);
         ctx.stroke();
-        ctx.fillStyle = 'red';
-        ctx.fillRect(10, 10, 20, 40);
+        
     }
 
     ngAfterViewChecked() {
