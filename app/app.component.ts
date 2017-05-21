@@ -4,7 +4,7 @@ import { CanvComponent } from "./canv.component";
 @Component({
   selector: 'my-app',
   template: `
-  <canvComp>Loading AppComponent content here ...</canvComp>
+  <canv-ctrl>Loading AppComponent content here ...</canv-ctrl>
   `
   ,
 })
