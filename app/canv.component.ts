@@ -75,7 +75,7 @@ export class CanvComponent
     constructor(width : number, height : number) 
     {
         this.setArea(width, height);
-        this.setBorder(50);
+        this.setBorder(20);
         this.setXAxis(-0.2, 0.2);
         this.setYAxis(-0.2, 0.2);
 
