@@ -7,7 +7,7 @@ import { CanvComponent } from "./canv.component";
 })
 export class CanvasControllerComponent
 {
-    canv: CanvComponent = new CanvComponent;
+    canv: CanvComponent = new CanvComponent(800,600);
 
     click() : void
     {

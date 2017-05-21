@@ -17,31 +17,36 @@ export class CanvasViewComponent
 
     show() : void
     {
-        if (this.canvas == null)
+        var dataNum = this.canv.getDataNum();
+        if (dataNum > 1)
         {
-            this.canvas = <HTMLCanvasElement>document.getElementById('myCanvas');
-        }
-        if (this.ctx == null)
-        {
-            this.ctx = this.canvas.getContext("2d");
-        }
-        
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = 'red';
-        this.ctx.clearRect(0,0,this.canv.width,this.canv.height);
-        this.ctx.beginPath();
+            if (this.canvas == null)
+            {
+                this.canvas = <HTMLCanvasElement>document.getElementById('myCanvas');
+            }
+            if (this.ctx == null)
+            {
+                this.ctx = this.canvas.getContext("2d");
+            }
+            
+            this.ctx.lineWidth = 1;
+            this.ctx.strokeStyle = 'red';
+            this.ctx.clearRect(0,0,this.canv.getWidth(),this.canv.getHeight());
+            this.ctx.beginPath();
 
-        var p : V2 = new V2(this.canv.dataX[0], this.canv.dataY[0]); 
-        var iP : V2 = this.canv.interp.interp(p);
-        
-        this.ctx.moveTo(iP.x,iP.y);
-        for (var i = 1; i < this.canv.dataNum; i++) {
-            p = new V2(this.canv.dataX[i], this.canv.dataY[i]);
-            iP = this.canv.interp.interp(p);
-            this.ctx.lineTo(iP.x,iP.y);
+            var iP : V2 = this.canv.getData(0);
+            this.ctx.moveTo(iP.x,iP.y);
+            for (var i = 1; i < dataNum; i++) {
+                iP = this.canv.getData(i);
+                this.ctx.lineTo(iP.x,iP.y);
+            }
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = 'gray';
+            var border : number = this.canv.getBorder();
+            this.ctx.rect(border, border, this.canv.getWidth()-border-border, this.canv.getHeight()-border-border);
+            this.ctx.stroke();
         }
-        this.ctx.stroke();
-        
     }
 
     ngAfterViewChecked() {
