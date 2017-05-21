@@ -25,6 +25,8 @@ export class CanvComponent
     private dataY : number[] = [];
     private dataNum : number;
 
+    test = 100;
+
     dbg = "Debug text";
 
     setArea(width : number, height : number)
