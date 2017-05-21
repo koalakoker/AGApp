@@ -21,8 +21,6 @@ export class CanvComponent implements AfterViewChecked
     click() : void
     {
         this.dbg = "Click";
-        this.ctx.fillStyle = 'rgb(255,255,255)';
-        this.ctx.fillRect(0,0,this.width,this.height);
         for (var i = 0; i < this.dataNum; i++) {
             this.dataY[i] = Math.random() * this.height;
         }
@@ -38,9 +36,11 @@ export class CanvComponent implements AfterViewChecked
         {
             this.ctx = this.canvas.getContext("2d");
         }
-        
+        //this.ctx.globalCompositeOperation = 'copy';
         this.ctx.lineWidth = 1;
         this.ctx.strokeStyle = 'red';
+        this.ctx.clearRect(0,0,this.width,this.height);
+        this.ctx.beginPath();
         this.ctx.moveTo(this.dataX[0],this.dataY[0]);
         for (var i = 1; i < this.dataNum; i++) {
             this.ctx.lineTo(this.dataX[i],this.dataY[i]);
