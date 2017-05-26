@@ -1,8 +1,8 @@
-import { Observer} from './observer';
+import { Observer } from './observer';
 
-export abstract class Subject
+export class Subject
 {
-    private observers : Observer[] = [];
+    observers : Observer[] = [];
 
     Attach(obs : Observer) : void
     {
@@ -11,10 +11,35 @@ export abstract class Subject
 
     Detach(obs : Observer) : void
     {
-        var index : number = this.observers.indexOf(obs, 0);
-        if (index > -1)
+        var removeIndex : number = this.observers.indexOf(obs, 0);
+        console.info("Deatch index " + removeIndex);
+        if (removeIndex > -1)
         {
-            this.observers.slice(index,1);
+            for (var index = 0; index < this.observers.length - 1; index++) {
+                if (index >= removeIndex)
+                {
+                    this.observers[index] = this.observers[index + 1];
+                }
+            }
+            this.observers.pop();
         }
+    }
+
+    Notify() : void
+    {
+        if (this.observers.length > 0)
+        {
+            this.observers.forEach(obs => {
+                obs.Update();
+            });
+        }
+    }
+
+    Info() : void
+    {
+        console.info(this.observers.length);
+        this.observers.forEach(element => {
+            console.info(element.ToString());
+        });
     }
 }

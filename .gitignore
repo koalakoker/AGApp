@@ -20,3 +20,7 @@
 /app/observer.js.map
 /app/subject.js
 /app/subject.js.map
+/app/observerConcrete.js
+/app/observerConcrete.js.map
+/app/subjectConcrete.js
+/app/subjectConcrete.js.map
