@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
 import { CanvComponent } from "./canv.component";
-import { ObserverConcrete } from "./observerConcrete"
-import { SubjectConcrete } from "./subjectConcrete"
+import { View } from "./View"
+import { Model } from "./model";
+import { Controller } from "./controller"
 
 @Component ({
     selector : 'canv-ctrl',
@@ -15,31 +16,25 @@ export class CanvasControllerComponent
     height : number = this.canv.getHeight();
     width : number = this.canv.getWidth();
 
-    sub : SubjectConcrete;
-    obs : ObserverConcrete;
-    obs2 : ObserverConcrete;
-    obs3 : ObserverConcrete;
+    model : Model;
+    view : View;
+    controller : Controller;
 
     constructor()
     {
-        this.sub = new SubjectConcrete;
-        this.obs = new ObserverConcrete(this.sub,'a');
-        this.obs2 = new ObserverConcrete(this.sub,'b');
+        this.model = new Model();
 
-        this.sub.Info();
-        this.sub.SetState(100);
-        this.sub.Info();
+        this.model.setName("Gino");
+        this.model.setSurname("Strada");
 
-        this.obs3 = new ObserverConcrete(this.sub,'c');
+        this.view = new View(this.model);
+        this.controller = new Controller(this.model, this.view);
 
-        this.sub.Info();
-        this.sub.SetState(20);
-        this.sub.Info();
-
-        this.sub.Detach(this.obs);
-        this.sub.Info();
-        this.sub.SetState(30);
-        this.sub.Info();
+        // Model update by itself
+        this.model.setName("Carmelo");
+        
+        // View update from user
+        this.view.SetUserInput("Latilla");
 
     }
 
