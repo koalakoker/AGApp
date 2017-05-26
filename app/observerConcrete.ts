@@ -9,8 +9,10 @@ export class ObserverConcrete implements Observer
 
     constructor(subj : SubjectConcrete, name : string)
     {
+        this.state = 0;
         this.name = name;
         this.subj = subj;
+        this.subj.Attach(this);
     }
 
     Update() : void

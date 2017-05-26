@@ -25,18 +25,19 @@ export class CanvasControllerComponent
         this.sub = new SubjectConcrete;
         this.obs = new ObserverConcrete(this.sub,'a');
         this.obs2 = new ObserverConcrete(this.sub,'b');
-        this.obs3 = new ObserverConcrete(this.sub,'c');
 
-        this.sub.Attach(this.obs);
-        this.sub.Attach(this.obs2);
+        this.sub.Info();
         this.sub.SetState(100);
         this.sub.Info();
 
-        this.sub.Attach(this.obs3);
+        this.obs3 = new ObserverConcrete(this.sub,'c');
+
+        this.sub.Info();
         this.sub.SetState(20);
         this.sub.Info();
 
         this.sub.Detach(this.obs);
+        this.sub.Info();
         this.sub.SetState(30);
         this.sub.Info();
 
