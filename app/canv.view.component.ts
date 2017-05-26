@@ -2,19 +2,22 @@ import { Component, Input, AfterViewChecked } from "@angular/core";
 
 import { V2 } from "./v2";
 import { Interp } from "./interp";
-import { CanvComponent } from "./canv.component";
+
+import { Observer } from "./observer";
+import { Subject } from "./subject";
+import { CanvModel } from "./canv.model";
 
 @Component ({
     selector : 'canv-view',
     templateUrl : './canv.view.component.html'
 })
-export class CanvasViewComponent
+export class CanvasViewComponent extends Subject implements Observer
 {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
 
-    @Input() canv: CanvComponent;
-
+    @Input() canv: CanvModel;
+    
     show() : void
     {
         var dataNum = this.canv.getDataNum();
@@ -53,4 +56,19 @@ export class CanvasViewComponent
         this.show();
     }
 
+    Update() : void
+    {
+        // Update from model
+        this.Draw();
+    }
+
+    ToString() : String 
+    {
+        return "Canvas view";
+    }
+
+    Draw() : void
+    {
+        console.info(this.ToString());
+    }
 }

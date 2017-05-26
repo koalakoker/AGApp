@@ -1,13 +1,9 @@
-import { Component } from "@angular/core";
 import { Axis } from "./axis";
 import { V2 } from "./v2";
 import { Interp } from "./interp";
+import { Subject } from "./subject";
 
-@Component ({
-    selector: 'canvComp',
-    templateUrl: './canv.component.html'
-})
-export class CanvComponent
+export class CanvModel extends Subject
 {
     private width : number;
     private height : number;
@@ -29,11 +25,23 @@ export class CanvComponent
 
     dbg = "Debug text";
 
+    constructor(width : number, height : number) 
+    {
+        super();
+        this.setArea(width, height);
+        this.setBorder(20);
+        this.setXAxis(-0.2, 0.2);
+        this.setYAxis(-0.2, 0.2);
+
+        this.initData();
+    }
+
     setArea(width : number, height : number)
     {
         this.width = width;
         this.height = height;
         this.updateAxis();
+        this.Notify();
     }
 
     getWidth() : number {return this.width;}
@@ -43,6 +51,7 @@ export class CanvComponent
     {
         this.border = border;
         this.updateAxis();
+        this.Notify();
     }
 
     getBorder() : number {return this.border;}
@@ -51,12 +60,14 @@ export class CanvComponent
     {
         this.xAxis = new Axis(min, max);
         this.updateInterp();
+        this.Notify();
     }
 
     setYAxis(min : number, max : number )
     {
         this.yAxis = new Axis(min, max);
         this.updateInterp();
+        this.Notify();
     }
 
     getXAxis() : Axis {return this.xAxis;}
@@ -65,6 +76,7 @@ export class CanvComponent
     updateInterp() : void
     {
         this.interp = new Interp(this.xAxis, this.yAxis, this.iAxis, this.jAxis);
+        this.Notify();
     }
 
     updateAxis() : void
@@ -72,16 +84,7 @@ export class CanvComponent
         this.iAxis = new Axis(this.border, this.width-this.border);
         this.jAxis = new Axis(this.border, this.height-this.border);
         this.updateInterp();
-    }
-
-    constructor(width : number, height : number) 
-    {
-        this.setArea(width, height);
-        this.setBorder(20);
-        this.setXAxis(-0.2, 0.2);
-        this.setYAxis(-0.2, 0.2);
-
-        this.initData();
+        this.Notify();
     }
 
     initData() : void 

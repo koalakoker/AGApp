@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { CanvComponent } from "./canv.component";
-import { View } from "./View"
-import { Model } from "./model";
-import { Controller } from "./controller"
+
+import { Observer } from "./observer";
+import { CanvasViewComponent } from "./canv.view.component"
+import { CanvModel } from "./canv.model";
 
 @Component ({
     selector : 'canv-ctrl',
@@ -10,42 +10,52 @@ import { Controller } from "./controller"
 })
 export class CanvasControllerComponent
 {
-    canv: CanvComponent = new CanvComponent(800,600);
+    model: CanvModel = new CanvModel(800,600);;
+    view: CanvasViewComponent;
 
-    border : number = this.canv.getBorder();
-    height : number = this.canv.getHeight();
-    width : number = this.canv.getWidth();
-
-    model : Model;
-    view : View;
-    controller : Controller;
+    border : number;
+    height : number;
+    width : number;
 
     constructor()
     {
-        this.model = new Model();
+        this.view = new CanvasViewComponent();
+    }
 
-        this.model.setName("Gino");
-        this.model.setSurname("Strada");
+    Bind(model : CanvModel, view : CanvasViewComponent)
+    {
+        this.model = model;
+        this.view = view;
+        this.view.Attach(this);
 
-        this.view = new View(this.model);
-        this.controller = new Controller(this.model, this.view);
-
-        // Model update by itself
-        this.model.setName("Carmelo");
-        
-        // View update from user
-        this.view.SetUserInput("Latilla");
-
+        this.OnLoad();
     }
 
     click() : void
     {
-        this.canv.initData();
+        this.model.initData();
     }
 
     onSubmit() : void
     {
-        this.canv.setBorder(this.border);
-        this.canv.setArea(this.width, this.height);
+        this.model.setBorder(this.border);
+        this.model.setArea(this.width, this.height);
+    }
+
+    Update() : void
+    {
+        // Update from View -> Get
+        console.info("Controller received update from view:");
+        // Act on model
+    }
+
+    ToString() : String 
+    {
+        return "";
+    }
+
+    OnLoad() : void
+    {
+        this.view.Draw();
     }
 }

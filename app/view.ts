@@ -1,6 +1,6 @@
 import { Observer } from "./observer";
-import { Model } from "./model"
 import { Subject } from "./subject";
+import { Model } from "./model"
 
 export class View extends Subject implements Observer
 {
