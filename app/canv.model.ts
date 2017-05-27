@@ -36,12 +36,37 @@ export class CanvModel extends Subject
         this.initData();
     }
 
+    set(width : number, height : number, border : number)
+    {
+        if (this.width != width)
+        {
+            this.width = width;
+            this.updateAxis();
+            this.Notify();
+        }
+        if (this.height != height)
+        {
+            this.height= height;
+            this.updateAxis();
+            this.Notify();
+        }
+        if (this.border != border)
+        {
+            this.border = border;
+            this.updateAxis();
+            this.Notify();
+        }
+    }
+
     setArea(width : number, height : number)
     {
-        this.width = width;
-        this.height = height;
-        this.updateAxis();
-        this.Notify();
+        if ((this.width != width) || (this.height != height))
+        {
+            this.width = width;
+            this.height = height;
+            this.updateAxis();
+            this.Notify();
+        }
     }
 
     getWidth() : number {return this.width;}
@@ -49,9 +74,12 @@ export class CanvModel extends Subject
 
     setBorder(border : number)
     {
-        this.border = border;
-        this.updateAxis();
-        this.Notify();
+        if (this.border != border)
+        {
+            this.border = border;
+            this.updateAxis();
+            this.Notify();
+        }
     }
 
     getBorder() : number {return this.border;}
@@ -73,18 +101,16 @@ export class CanvModel extends Subject
     getXAxis() : Axis {return this.xAxis;}
     getYAxis() : Axis {return this.yAxis;}
 
-    updateInterp() : void
+    private updateInterp() : void
     {
         this.interp = new Interp(this.xAxis, this.yAxis, this.iAxis, this.jAxis);
-        this.Notify();
     }
 
-    updateAxis() : void
+    private updateAxis() : void
     {
         this.iAxis = new Axis(this.border, this.width-this.border);
         this.jAxis = new Axis(this.border, this.height-this.border);
         this.updateInterp();
-        this.Notify();
     }
 
     initData() : void 
@@ -102,6 +128,7 @@ export class CanvModel extends Subject
             this.dataY.push((Math.random() * delta) - 0.2);
         }
         this.dataNum = n;
+        this.Notify();
     }
 
     getDataNum() : number {return this.dataNum;}

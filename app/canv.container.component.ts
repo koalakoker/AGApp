@@ -1,35 +1,45 @@
-import { Component } from "@angular/core";
+import { Component, AfterViewInit, ViewChild } from "@angular/core";
 
 import { CanvasViewComponent } from "./canv.view.component"
 import { CanvModel } from "./canv.model";
 import { CanvController } from "./canv.controller";
 
+import { Observer } from "./observer";
+
 @Component ({
     selector : 'canv-ctrl',
     templateUrl : './canv.container.component.html'
 })
-export class CanvasContainerComponent
+export class CanvasContainerComponent implements AfterViewInit, Observer
 {
-    model: CanvModel = new CanvModel(800,600);;
-    view: CanvasViewComponent;
+    model: CanvModel;
+    @ViewChild(CanvasViewComponent) private view : CanvasViewComponent;
     contr : CanvController;
 
-    border : number;
-    height : number;
     width : number;
+    height : number;
+    border : number;
 
+    blockSignals : boolean;
+    
     constructor()
     {
-        this.view = new CanvasViewComponent();
+        this.model = new CanvModel(800,600);
+        this.UpdateFromModel();
+        this.model.Attach(this);
+        this.blockSignals = false;
     }
 
-    Bind(model : CanvModel, view : CanvasViewComponent)
+    ngAfterViewInit() 
     {
-        this.model = model;
-        this.view = view;
-        this.view.Attach(this);
+        this.model.Attach(this.view);
+        this.contr = new CanvController(this.model, this.view);
+    }
 
-        this.OnLoad();
+    onChange()
+    {
+        //  User change value in the form
+        this.UpdateToModel();
     }
 
     click() : void
@@ -45,9 +55,12 @@ export class CanvasContainerComponent
 
     Update() : void
     {
-        // Update from View -> Get
-        console.info("Controller received update from view:");
-        // Act on model
+        // Receiving an update from the model
+        if (!this.blockSignals)
+        {
+            this.UpdateFromModel();
+            console.info("Container received update from model");
+        }
     }
 
     ToString() : String 
@@ -55,8 +68,20 @@ export class CanvasContainerComponent
         return "";
     }
 
-    OnLoad() : void
+    private UpdateFromModel() : void
     {
-        this.view.Draw();
+        this.width = this.model.getWidth();
+        this.height = this.model.getHeight();
+        this.border = this.model.getBorder();
+    }
+
+    private UpdateToModel() : void
+    {
+        // Disable signal to update the model
+        this.blockSignals = true;
+        //this.model.setArea(this.width, this.height);
+        //this.model.setBorder(this.border);
+        this.model.set(this.width, this.height, this.border);
+        this.blockSignals = false;
     }
 }

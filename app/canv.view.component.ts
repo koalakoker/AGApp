@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewChecked } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 import { V2 } from "./v2";
 import { Interp } from "./interp";
@@ -17,8 +17,8 @@ export class CanvasViewComponent extends Subject implements Observer
     ctx: CanvasRenderingContext2D;
 
     @Input() canv: CanvModel;
-    
-    show() : void
+
+    Draw() : void
     {
         var dataNum = this.canv.getDataNum();
         if (dataNum > 1)
@@ -49,27 +49,20 @@ export class CanvasViewComponent extends Subject implements Observer
             var border : number = this.canv.getBorder();
             this.ctx.rect(border, border, this.canv.getWidth()-border-border, this.canv.getHeight()-border-border);
             this.ctx.stroke();
+            console.info("Draw");
         }
-    }
-
-    ngAfterViewChecked() {
-        this.show();
     }
 
     Update() : void
     {
         // Update from model
         this.Draw();
+        //console.info("Canv View -> Received update from model");
     }
 
     ToString() : String 
     {
         return "Canvas view";
-    }
-
-    Draw() : void
-    {
-        console.info(this.ToString());
     }
 
     userInput : String;
