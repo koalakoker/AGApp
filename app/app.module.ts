@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 
 import { AppComponent }  from './app.component';
-import { CanvasControllerComponent} from "./canv.ctrl.component";
+import { CanvasContainerComponent} from "./canv.container.component";
 import { CanvasViewComponent} from "./canv.view.component";
 
 @NgModule({
@@ -12,7 +12,7 @@ import { CanvasViewComponent} from "./canv.view.component";
                   FormsModule
                 ],
   declarations: [ AppComponent,  
-                  CanvasControllerComponent, 
+                  CanvasContainerComponent, 
                   CanvasViewComponent
                 ],
   bootstrap:    [ AppComponent ]

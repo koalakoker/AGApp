@@ -71,4 +71,17 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         console.info(this.ToString());
     }
+
+    userInput : String;
+
+    GetUserInput() : String
+    {
+        return this.userInput;
+    }
+
+    SetUserInput(userInput : String) : void
+    {
+        this.userInput = userInput;
+        this.Notify();
+    }
 }

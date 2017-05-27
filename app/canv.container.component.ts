@@ -1,17 +1,18 @@
 import { Component } from "@angular/core";
 
-import { Observer } from "./observer";
 import { CanvasViewComponent } from "./canv.view.component"
 import { CanvModel } from "./canv.model";
+import { CanvController } from "./canv.controller";
 
 @Component ({
     selector : 'canv-ctrl',
-    templateUrl : './canv.ctrl.component.html'
+    templateUrl : './canv.container.component.html'
 })
-export class CanvasControllerComponent
+export class CanvasContainerComponent
 {
     model: CanvModel = new CanvModel(800,600);;
     view: CanvasViewComponent;
+    contr : CanvController;
 
     border : number;
     height : number;

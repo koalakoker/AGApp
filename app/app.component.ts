@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CanvComponent } from "./canv.component";
 
 @Component({
   selector: 'my-app',
