@@ -12,8 +12,7 @@ export class CanvController implements Observer
         this.model = model;
         this.view = view;
         this.view.Attach(this);
-
-        this.OnLoad();
+        this.view.prepareSize();;
     }
 
     Update() : void
@@ -26,10 +25,5 @@ export class CanvController implements Observer
     ToString() : String 
     {
         return "";
-    }
-
-    OnLoad() : void
-    {
-        this.view.Draw();
     }
 }
