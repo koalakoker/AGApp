@@ -6,6 +6,7 @@ import { Interp } from "./interp";
 import { Observer } from "./observer";
 import { Subject } from "./subject";
 import { CanvModel } from "./canv.model";
+import { ClickRect } from "./clickRect";
 
 @Component ({
     selector : 'canv-view',
@@ -65,6 +66,18 @@ export class CanvasViewComponent extends Subject implements Observer
     }
 
     cursorXpos : number = 400;
+    cursorRect : ClickRect = new ClickRect(0, 0, 0, 0);
+
+    CursorRectUpdate()
+    {
+        var cursorLeftMargin : number = 10;
+        var cursorRightMargin : number = 20;
+        var border : number = this.canv.getBorder();
+        this.cursorRect.top = border;
+        this.cursorRect.left = this.cursorXpos - cursorLeftMargin;
+        this.cursorRect.bottom = this.height - border;
+        this.cursorRect.right = this.cursorXpos + cursorRightMargin;
+    }
 
     DrawCursors() : void
     {
@@ -77,6 +90,7 @@ export class CanvasViewComponent extends Subject implements Observer
         this.ctx.lineTo(this.cursorXpos,this.height-border);
         this.ctx.stroke();
 
+        this.CursorRectUpdate();
     }
 
     Draw() : void
@@ -145,9 +159,15 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         if (event.button == 0)
         {
-            this.dragCursor = true;
+            var x : number = event.clientX; 
+            var y : number = event.clientY; 
+            if (this.cursorRect.ClickOn(x,y))
+            {
+                this.dragCursor = true;
+                this.dbg = "Button Down " + event.button.toString(10);
+            }   
         }
-        this.dbg = "Button Down " + event.button.toString(10);
+        
     }
 
     mouseUp(event : MouseEvent)
