@@ -28,9 +28,10 @@ export class CanvasViewComponent extends Subject implements Observer
     constructor()
     {
         super();
-        this.cursors.push(new Cursor(100));
-        this.cursors.push(new Cursor(200));
-        this.cursors.push(new Cursor(300));
+        this.cursors.push(new Cursor(100, '#0000FF'));
+        this.cursors.push(new Cursor(200, '#FF0000'));
+        this.cursors.push(new Cursor(300, '#000000'));
+        this.cursors.push(new Cursor(400, '#009900'));
     }
 
     GetContext()

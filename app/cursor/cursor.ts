@@ -8,7 +8,7 @@ export class Cursor
     public cursorRect : ClickRect = new ClickRect(0, 0, 0, 0);
     public dragCursor : boolean = false;
 
-    constructor(public xPos : number)
+    constructor(public xPos : number, public strokeStyle : String)
     {
 
     }
@@ -35,7 +35,7 @@ export class Cursor
         if (this.ctx != null)
         {
             this.ctx.lineWidth = 1;
-            this.ctx.strokeStyle = '#0000FF';
+            this.ctx.strokeStyle = this.strokeStyle;
 
             this.ctx.beginPath();
             var border : number = this.canvModel.getBorder();
