@@ -38,3 +38,9 @@
 /app/canv.controller.js.map
 /app/clickRect.js
 /app/clickRect.js.map
+/app/cursor/cursorController.js
+/app/cursor/cursorController.js.map
+/app/cursor/cursorModel.js
+/app/cursor/cursorModel.js.map
+/app/cursor/cursorView.js
+/app/cursor/cursorView.js.map

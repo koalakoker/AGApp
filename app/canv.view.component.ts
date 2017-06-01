@@ -6,7 +6,10 @@ import { Interp } from "./interp";
 import { Observer } from "./observer";
 import { Subject } from "./subject";
 import { CanvModel } from "./canv.model";
-import { ClickRect } from "./clickRect";
+
+import { CursorModel } from "./cursor/cursorModel";
+import { CursorView } from "./cursor/cursorView";
+import { CursorController } from "./cursor/cursorController";
 
 @Component ({
     selector : 'canv-view',
@@ -20,9 +23,24 @@ export class CanvasViewComponent extends Subject implements Observer
     width : number;
     height : number;
 
+    dbg : String;
+    dragCursor : boolean = false;
+    cursorModel : CursorModel;
+    cursorView : CursorView;
+    cursorCtrl : CursorController;
+
     @Input() canv: CanvModel;
 
-    DrawStart() : void
+    constructor()
+    {
+        super();
+        this.cursorModel = new CursorModel();
+        this.cursorView = new CursorView(this.cursorModel);
+        this.cursorCtrl = new CursorController(this.cursorModel, this.cursorView);
+        this.cursorModel.setXpos(400);
+    }
+
+    GetContext()
     {
         if (this.canvas == null)
         {
@@ -31,7 +49,13 @@ export class CanvasViewComponent extends Subject implements Observer
         if (this.ctx == null)
         {
             this.ctx = this.canvas.getContext("2d");
+            this.cursorView.SetContext(this.ctx, this.canv);
         }
+    }
+
+    DrawStart() : void
+    {
+        this.GetContext();
         this.ctx.clearRect(0,0,this.canv.getWidth(),this.canv.getHeight());
     }
 
@@ -65,32 +89,9 @@ export class CanvasViewComponent extends Subject implements Observer
         this.ctx.stroke();
     }
 
-    cursorXpos : number = 400;
-    cursorRect : ClickRect = new ClickRect(0, 0, 0, 0);
-
-    CursorRectUpdate()
-    {
-        var cursorLeftMargin : number = 10;
-        var cursorRightMargin : number = 20;
-        var border : number = this.canv.getBorder();
-        this.cursorRect.top = border;
-        this.cursorRect.left = this.cursorXpos - cursorLeftMargin;
-        this.cursorRect.bottom = this.height - border;
-        this.cursorRect.right = this.cursorXpos + cursorRightMargin;
-    }
-
     DrawCursors() : void
     {
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = '#0000FF';
-
-        this.ctx.beginPath();
-        var border : number = this.canv.getBorder();
-        this.ctx.moveTo(this.cursorXpos,border);
-        this.ctx.lineTo(this.cursorXpos,this.height-border);
-        this.ctx.stroke();
-
-        this.CursorRectUpdate();
+        this.cursorView.Draw();
     }
 
     Draw() : void
@@ -152,16 +153,13 @@ export class CanvasViewComponent extends Subject implements Observer
         console.info("Canvas view -> Click");
     }
 
-    dbg : String;
-    dragCursor : boolean = false;
-
     mouseDown(event : MouseEvent)
     {
         if (event.button == 0)
         {
             var x : number = event.clientX; 
             var y : number = event.clientY; 
-            if (this.cursorRect.ClickOn(x,y))
+            if (this.cursorView.cursorRect.ClickOn(x,y))
             {
                 this.dragCursor = true;
                 this.dbg = "Button Down " + event.button.toString(10);
@@ -183,7 +181,7 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         if (this.dragCursor)
         {
-            this.cursorXpos = event.clientX;
+            this.cursorModel.setXpos(event.clientX);
             this.Draw();
         }
         this.dbg = "x:" + event.clientX + " y:" + event.clientY;
