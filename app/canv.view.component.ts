@@ -64,6 +64,8 @@ export class CanvasViewComponent extends Subject implements Observer
         this.ctx.stroke();
     }
 
+    cursorXpos : number = 400;
+
     DrawCursors() : void
     {
         this.ctx.lineWidth = 1;
@@ -71,8 +73,8 @@ export class CanvasViewComponent extends Subject implements Observer
 
         this.ctx.beginPath();
         var border : number = this.canv.getBorder();
-        this.ctx.moveTo(100,border);
-        this.ctx.lineTo(100,this.height-border);
+        this.ctx.moveTo(this.cursorXpos,border);
+        this.ctx.lineTo(this.cursorXpos,this.height-border);
         this.ctx.stroke();
 
     }
@@ -137,14 +139,33 @@ export class CanvasViewComponent extends Subject implements Observer
     }
 
     dbg : String;
+    dragCursor : boolean = false;
 
-    mouseButton(event : MouseEvent)
+    mouseDown(event : MouseEvent)
     {
-        this.dbg = "Button " + event.button.toString(10);
+        if (event.button == 0)
+        {
+            this.dragCursor = true;
+        }
+        this.dbg = "Button Down " + event.button.toString(10);
+    }
+
+    mouseUp(event : MouseEvent)
+    {
+        if (event.button == 0)
+        {
+            this.dragCursor = false;
+        }
+        this.dbg = "Button Up " + event.button.toString(10);
     }
 
     mouseMove(event : MouseEvent)
     {
+        if (this.dragCursor)
+        {
+            this.cursorXpos = event.clientX;
+            this.Draw();
+        }
         this.dbg = "x:" + event.clientX + " y:" + event.clientY;
     }
 
