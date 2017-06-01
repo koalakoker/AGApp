@@ -6,10 +6,7 @@ import { Interp } from "./interp";
 import { Observer } from "./observer";
 import { Subject } from "./subject";
 import { CanvModel } from "./canv.model";
-
-import { CursorModel } from "./cursor/cursorModel";
-import { CursorView } from "./cursor/cursorView";
-import { CursorController } from "./cursor/cursorController";
+import { Cursor } from "./cursor/cursor";
 
 @Component ({
     selector : 'canv-view',
@@ -25,19 +22,14 @@ export class CanvasViewComponent extends Subject implements Observer
 
     dbg : String;
     dragCursor : boolean = false;
-    cursorModel : CursorModel;
-    cursorView : CursorView;
-    cursorCtrl : CursorController;
+    cursor : Cursor;
 
     @Input() canv: CanvModel;
 
     constructor()
     {
         super();
-        this.cursorModel = new CursorModel();
-        this.cursorView = new CursorView(this.cursorModel);
-        this.cursorCtrl = new CursorController(this.cursorModel, this.cursorView);
-        this.cursorModel.setXpos(400);
+        this.cursor = new Cursor(400);
     }
 
     GetContext()
@@ -49,7 +41,7 @@ export class CanvasViewComponent extends Subject implements Observer
         if (this.ctx == null)
         {
             this.ctx = this.canvas.getContext("2d");
-            this.cursorView.SetContext(this.ctx, this.canv);
+            this.cursor.SetContext(this.ctx, this.canv);
         }
     }
 
@@ -91,7 +83,7 @@ export class CanvasViewComponent extends Subject implements Observer
 
     DrawCursors() : void
     {
-        this.cursorView.Draw();
+        this.cursor.Draw();
     }
 
     Draw() : void
@@ -159,7 +151,7 @@ export class CanvasViewComponent extends Subject implements Observer
         {
             var x : number = event.clientX; 
             var y : number = event.clientY; 
-            if (this.cursorView.cursorRect.ClickOn(x,y))
+            if (this.cursor.cursorRect.ClickOn(x,y))
             {
                 this.dragCursor = true;
                 this.dbg = "Button Down " + event.button.toString(10);
@@ -181,7 +173,7 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         if (this.dragCursor)
         {
-            this.cursorModel.setXpos(event.clientX);
+            this.cursor.xPos = event.clientX;
             this.Draw();
         }
         this.dbg = "x:" + event.clientX + " y:" + event.clientY;
