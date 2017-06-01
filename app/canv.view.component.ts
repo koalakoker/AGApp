@@ -64,11 +64,25 @@ export class CanvasViewComponent extends Subject implements Observer
         this.ctx.stroke();
     }
 
+    DrawCursors() : void
+    {
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = '#0000FF';
+
+        this.ctx.beginPath();
+        var border : number = this.canv.getBorder();
+        this.ctx.moveTo(100,border);
+        this.ctx.lineTo(100,this.height-border);
+        this.ctx.stroke();
+
+    }
+
     Draw() : void
     {
         this.DrawStart();
         this.DrawBorder();
         this.DrawGraph();
+        this.DrawCursors();
     }
 
     Update() : void
