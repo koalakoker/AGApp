@@ -7,6 +7,7 @@ import { Observer } from "./observer";
 import { Subject } from "./subject";
 import { CanvModel } from "./canv.model";
 import { Cursor } from "./cursor/cursor";
+import { Cursors } from "./cursor/cursors";
 
 @Component ({
     selector : 'canv-view',
@@ -21,17 +22,17 @@ export class CanvasViewComponent extends Subject implements Observer
     height : number;
 
     dbg : String;
-    cursors : Array<Cursor> = [];
+    cursors : Cursors = new Cursors();
 
     @Input() canv: CanvModel;
 
     constructor()
     {
         super();
-        this.cursors.push(new Cursor(100, '#0000FF'));
-        this.cursors.push(new Cursor(200, '#FF0000'));
-        this.cursors.push(new Cursor(300, '#000000'));
-        this.cursors.push(new Cursor(400, '#009900'));
+        this.cursors.NewCursor(100);
+        this.cursors.NewCursor(200);
+        this.cursors.NewCursor(300);
+        this.cursors.NewCursor(400);
     }
 
     GetContext()
@@ -43,7 +44,7 @@ export class CanvasViewComponent extends Subject implements Observer
         if (this.ctx == null)
         {
             this.ctx = this.canvas.getContext("2d");
-            this.cursors.forEach(element => {
+            this.cursors.c.forEach(element => {
                 element.SetContext(this.ctx, this.canv);    
             });
             
@@ -88,7 +89,7 @@ export class CanvasViewComponent extends Subject implements Observer
 
     DrawCursors() : void
     {
-        this.cursors.forEach(element => {
+        this.cursors.c.forEach(element => {
             element.Draw();
         });
     }
@@ -159,23 +160,27 @@ export class CanvasViewComponent extends Subject implements Observer
             var x : number = event.clientX;
             var y : number = event.clientY;
             var clicked : boolean = false;
-            this.cursors.forEach(element => {
+            this.cursors.c.forEach(element => {
                 if ((element.ClickOn(x,y)) && (!clicked))
                 {
                     element.dragCursor = true;
                     clicked = true;
-                    this.dbg = "Button Down " + event.button.toString(10);
                 } 
             });   
         }
-        
+        if (event.button == 2)
+        {
+            this.cursors.NewCursor(event.clientX).SetContext(this.ctx, this.canv);
+            this.Draw();
+        }
+        this.dbg = "Button Down " + event.button.toString(10);
     }
 
     mouseUp(event : MouseEvent)
     {
         if (event.button == 0)
         {
-            this.cursors.forEach(element => {
+            this.cursors.c.forEach(element => {
                 element.dragCursor = false;
             });
         }
@@ -184,7 +189,7 @@ export class CanvasViewComponent extends Subject implements Observer
 
     mouseMove(event : MouseEvent)
     {
-        this.cursors.forEach(element => {
+        this.cursors.c.forEach(element => {
             if (element.dragCursor)
             {
                 element.xPos = event.clientX;

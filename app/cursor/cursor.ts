@@ -8,7 +8,7 @@ export class Cursor
     public cursorRect : ClickRect = new ClickRect(0, 0, 0, 0);
     public dragCursor : boolean = false;
 
-    constructor(public xPos : number, public strokeStyle : String)
+    constructor(public xPos : number, public strokeStyle : string)
     {
 
     }
