@@ -157,10 +157,12 @@ export class CanvasViewComponent extends Subject implements Observer
         {
             var x : number = event.clientX;
             var y : number = event.clientY;
+            var clicked : boolean = false;
             this.cursors.forEach(element => {
-                if (element.ClickOn(x,y))
+                if ((element.ClickOn(x,y)) && (!clicked))
                 {
                     element.dragCursor = true;
+                    clicked = true;
                     this.dbg = "Button Down " + event.button.toString(10);
                 } 
             });   
