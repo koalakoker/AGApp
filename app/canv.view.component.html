@@ -8,5 +8,5 @@
         >
 </canvas>
 <p>{{dbg}}</p>
-<p>{{cursor.cursorRect.ToString()}}</p>
+<p *ngFor = "let cursor of cursors">{{cursor.cursorRect.ToString()}}</p>
 <br>

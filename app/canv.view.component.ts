@@ -21,15 +21,16 @@ export class CanvasViewComponent extends Subject implements Observer
     height : number;
 
     dbg : String;
-    dragCursor : boolean = false;
-    cursor : Cursor;
+    cursors : Array<Cursor> = [];
 
     @Input() canv: CanvModel;
 
     constructor()
     {
         super();
-        this.cursor = new Cursor(400);
+        this.cursors.push(new Cursor(100));
+        this.cursors.push(new Cursor(200));
+        this.cursors.push(new Cursor(300));
     }
 
     GetContext()
@@ -41,7 +42,10 @@ export class CanvasViewComponent extends Subject implements Observer
         if (this.ctx == null)
         {
             this.ctx = this.canvas.getContext("2d");
-            this.cursor.SetContext(this.ctx, this.canv);
+            this.cursors.forEach(element => {
+                element.SetContext(this.ctx, this.canv);    
+            });
+            
         }
     }
 
@@ -83,7 +87,9 @@ export class CanvasViewComponent extends Subject implements Observer
 
     DrawCursors() : void
     {
-        this.cursor.Draw();
+        this.cursors.forEach(element => {
+            element.Draw();
+        });
     }
 
     Draw() : void
@@ -149,13 +155,15 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         if (event.button == 0)
         {
-            var x : number = event.clientX; 
-            var y : number = event.clientY; 
-            if (this.cursor.cursorRect.ClickOn(x,y))
-            {
-                this.dragCursor = true;
-                this.dbg = "Button Down " + event.button.toString(10);
-            }   
+            var x : number = event.clientX;
+            var y : number = event.clientY;
+            this.cursors.forEach(element => {
+                if (element.ClickOn(x,y))
+                {
+                    element.dragCursor = true;
+                    this.dbg = "Button Down " + event.button.toString(10);
+                } 
+            });   
         }
         
     }
@@ -164,18 +172,23 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         if (event.button == 0)
         {
-            this.dragCursor = false;
+            this.cursors.forEach(element => {
+                element.dragCursor = false;
+            });
         }
         this.dbg = "Button Up " + event.button.toString(10);
     }
 
     mouseMove(event : MouseEvent)
     {
-        if (this.dragCursor)
-        {
-            this.cursor.xPos = event.clientX;
-            this.Draw();
-        }
+        this.cursors.forEach(element => {
+            if (element.dragCursor)
+            {
+                element.xPos = event.clientX;
+                this.Draw();
+            }    
+        });
+        
         this.dbg = "x:" + event.clientX + " y:" + event.clientY;
     }
 

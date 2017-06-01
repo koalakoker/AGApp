@@ -4,9 +4,9 @@ import { ClickRect } from "../clickRect";
 export class Cursor
 {
     canvModel : CanvModel;
-
     ctx : CanvasRenderingContext2D;
     public cursorRect : ClickRect = new ClickRect(0, 0, 0, 0);
+    public dragCursor : boolean = false;
 
     constructor(public xPos : number)
     {
@@ -44,5 +44,10 @@ export class Cursor
             this.ctx.stroke();
             this.CursorRectUpdate();
         }
+    }
+
+    ClickOn(x: number, y: number) : boolean
+    {
+        return this.cursorRect.ClickOn(x, y);
     }
 }
