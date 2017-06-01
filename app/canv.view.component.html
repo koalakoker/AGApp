@@ -2,6 +2,9 @@
         width="{{width}}" 
         height="{{height}}" 
         style="border:1px solid #000000;"
-        (click) = "click()"
-        ></canvas>
+        (mousedown) = "mouseButton($event)"
+        (mousemove) = "mouseMove($event)"
+        >
+</canvas>
+<p>{{dbg}}</p>
 <br>

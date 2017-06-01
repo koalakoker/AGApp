@@ -21,25 +21,28 @@ export class CanvasViewComponent extends Subject implements Observer
 
     @Input() canv: CanvModel;
 
-    Draw() : void
+    DrawStart() : void
+    {
+        if (this.canvas == null)
+        {
+            this.canvas = <HTMLCanvasElement>document.getElementById('myCanvas');
+        }
+        if (this.ctx == null)
+        {
+            this.ctx = this.canvas.getContext("2d");
+        }
+        this.ctx.clearRect(0,0,this.canv.getWidth(),this.canv.getHeight());
+    }
+
+    DrawGraph() : void
     {
         var dataNum = this.canv.getDataNum();
         if (dataNum > 1)
         {
-            if (this.canvas == null)
-            {
-                this.canvas = <HTMLCanvasElement>document.getElementById('myCanvas');
-            }
-            if (this.ctx == null)
-            {
-                this.ctx = this.canvas.getContext("2d");
-            }
-            
             this.ctx.lineWidth = 1;
             this.ctx.strokeStyle = 'red';
-            this.ctx.clearRect(0,0,this.canv.getWidth(),this.canv.getHeight());
+            
             this.ctx.beginPath();
-
             var iP : V2 = this.canv.getData(0);
             this.ctx.moveTo(iP.x,iP.y);
             for (var i = 1; i < dataNum; i++) {
@@ -47,12 +50,25 @@ export class CanvasViewComponent extends Subject implements Observer
                 this.ctx.lineTo(iP.x,iP.y);
             }
             this.ctx.stroke();
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = 'gray';
-            var border : number = this.canv.getBorder();
-            this.ctx.rect(border, border, this.canv.getWidth()-border-border, this.canv.getHeight()-border-border);
-            this.ctx.stroke();
         }
+    }
+
+    DrawBorder() : void
+    {
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = 'gray';
+
+        this.ctx.beginPath();
+        var border : number = this.canv.getBorder();
+        this.ctx.rect(border, border, this.canv.getWidth()-border-border, this.canv.getHeight()-border-border);
+        this.ctx.stroke();
+    }
+
+    Draw() : void
+    {
+        this.DrawStart();
+        this.DrawBorder();
+        this.DrawGraph();
     }
 
     Update() : void
@@ -104,6 +120,18 @@ export class CanvasViewComponent extends Subject implements Observer
     {
         this.Draw();
         console.info("Canvas view -> Click");
+    }
+
+    dbg : String;
+
+    mouseButton(event : MouseEvent)
+    {
+        this.dbg = "Button " + event.button.toString(10);
+    }
+
+    mouseMove(event : MouseEvent)
+    {
+        this.dbg = "x:" + event.clientX + " y:" + event.clientY;
     }
 
     private redrawAfterResize(cw : CanvasViewComponent)
