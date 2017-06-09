@@ -29,10 +29,6 @@ export class CanvasViewComponent extends Subject implements Observer
     constructor()
     {
         super();
-        this.cursors.NewCursor(100);
-        this.cursors.NewCursor(200);
-        this.cursors.NewCursor(300);
-        this.cursors.NewCursor(400);
     }
 
     GetContext()

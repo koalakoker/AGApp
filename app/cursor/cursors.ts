@@ -23,7 +23,6 @@ export class Cursors
         ]
 
         retVal = colors[this.n];
-        console.info("Color selected " + this.n.toString(10));
         
         this.n++;
         if (this.n >= colors.length)
