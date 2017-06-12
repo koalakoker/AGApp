@@ -1,5 +1,5 @@
 import { Observer } from "./observer";
-import { View } from "./View"
+import { View } from "./view"
 import { Model } from "./model";
 
 export class Controller implements Observer

@@ -1,5 +1,5 @@
 import { Observer } from "./observer";
-import { SubjectConcrete } from "./SubjectConcrete"
+import { SubjectConcrete } from "./subjectConcrete"
 
 export class ObserverConcrete implements Observer
 {
